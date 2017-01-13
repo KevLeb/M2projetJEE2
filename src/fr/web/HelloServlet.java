@@ -16,7 +16,7 @@ import fr.beans.Hello;
     displayName = "My JEE 6 Servlet",
     description = "Ma première servlet avec annotations",
     loadOnStartup = 10,
-    urlPatterns = { "/Hello4", "/accueil" }
+    urlPatterns = { "/Hello6", "/accueil" }
 )
 public class HelloServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
