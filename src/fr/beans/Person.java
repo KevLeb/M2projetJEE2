@@ -15,6 +15,7 @@ public class Person {
 	private String lastName;
 	
 	@Id()
+	@Column(name = "email")
 	private String email;
 	
 	@Column(name = "web")
