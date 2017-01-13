@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
   <runtime name="Tomcat CV"/>
@@ -10,3 +11,16 @@
   <installed facet="jst.jaxrs" version="1.1"/>
   <installed facet="jst.jsf" version="2.1"/>
 </faceted-project>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<faceted-project>
+  <runtime name="Tomcat CV"/>
+  <fixed facet="wst.jsdt.web"/>
+  <fixed facet="jst.web"/>
+  <fixed facet="java"/>
+  <installed facet="java" version="1.8"/>
+  <installed facet="jst.web" version="3.0"/>
+  <installed facet="wst.jsdt.web" version="1.0"/>
+  <installed facet="jst.jaxrs" version="1.1"/>
+</faceted-project>
+>>>>>>> branch 'master' of https://github.com/KevLeb/M2projetJEE2.git
