@@ -1,6 +1,5 @@
 package fr.beans;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,11 +12,10 @@ public class Activity {
 	@ManyToOne
 	@JoinColumn(name="id")
 	private CV cv;
-	
+
 	private int year;
 	
-	@Embedded
-	private Nature nature;
+	private String nature;
 	
 	private String title;
 	
@@ -29,6 +27,14 @@ public class Activity {
 		
 	}
 	
+	public CV getCv() {
+		return cv;
+	}
+
+	public void setCv(CV cv) {
+		this.cv = cv;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -61,11 +67,11 @@ public class Activity {
 		this.year = year;
 	}
 
-	public Nature getNature() {
+	public String getNature() {
 		return nature;
 	}
 
-	public void setNature(Nature nature) {
+	public void setNature(String nature) {
 		this.nature = nature;
 	}
 }
