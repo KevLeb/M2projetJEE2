@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -20,29 +21,29 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 	private DataSource ds;
 
 	@Override
-	public Person searchPerson(String search) throws SQLException {
-		Person pers = new Person();
+	public ArrayList<Person> searchPerson(String search) throws SQLException {
+		ArrayList<Person> persons = new ArrayList<Person>();
 		
 		String query = "SELECT firstName, lastName, email, web, birthday FROM Person "
 				+ "WHERE firstName LIKE " + "'%"+ search + "%'" +
 				" OR lastName   LIKE " + "'%"+ search + "%'" +
 				" OR email      LIKE " + "'%"+ search + "%' ORDER BY firstName, lastName";
+		
 		Connection c = ds.getConnection();
-		PreparedStatement st = c.prepareStatement(query);
+		Statement st = c.createStatement();
 		ResultSet rs = st.executeQuery(query);
-		if(! rs.next())
-			return null;
 		
-		pers.setFirstName( rs.getString(1) );
-		pers.setLastName ( rs.getString(2) );
-		pers.setEmail	 ( rs.getString(3) );
-		pers.setWeb		 ( rs.getString(4) );
-		pers.setBirthday ( rs.getString(5) );
-		pers.setPassword ( rs.getString(6) );
-		
-		st.execute();
-		
-		return pers;
+		while(rs.next()){
+			Person pers = new Person();
+			pers.setFirstName( rs.getString(1) );
+			pers.setLastName ( rs.getString(2) );
+			pers.setEmail	 ( rs.getString(3) );
+			pers.setWeb		 ( rs.getString(4) );
+			pers.setBirthday ( rs.getString(5) );
+			pers.setPassword ( rs.getString(6) );
+			persons.add(pers);
+		}
+		return persons.size() == 0 ? null : persons;
 	}
 
 	@Override
@@ -56,14 +57,17 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 		String lastName = p.getLastName();
 		String email = p.getEmail();
 		String web = p.getWeb();
-		String naissance = p.getBirthday();
+		String birthday = p.getBirthday();
 		String password= p.getPassword();
 
+		prepareQuery(st, firstName, lastName, email, web, birthday, password);
+		
 		st.execute();		
+		//TODO mettre peut etre un ResultSet
 	}
 
 	@Override
-	public void readPerson(Person p)  throws SQLException {
+	public Person readPerson(Person p)  throws SQLException {
 		String query = "SELECT firstName, lastName, email, web, birthday FROM Person "
 				+ "WHERE firstName = " + p.getFirstName()  +
 				" OR lastName      = " + p.getLastName() +
@@ -71,14 +75,27 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 				" OR web           = " + p.getWeb() + 
 				" OR birthday      = " + p.getBirthday();
 		Connection c = ds.getConnection();
-		PreparedStatement st = c.prepareStatement(query);
-		st.execute();
+		Statement st = c.createStatement();
+		ResultSet rs = st.executeQuery(query);
+
+		if (! rs.next())
+			return null;
+		
+		Person pers = new Person();
+		pers.setFirstName( rs.getString(1) );
+		pers.setLastName ( rs.getString(2) );
+		pers.setEmail	 ( rs.getString(3) );
+		pers.setWeb		 ( rs.getString(4) );
+		pers.setBirthday ( rs.getString(5) );
+		pers.setPassword ( rs.getString(6) );
+		
+		return pers;
 	}
 
 	@Override
-	public void updatePerson(Person p) throws SQLException {
+	public void updatePerson(Person p, String id) throws SQLException {
 		String query = "UPDATE Person SET firstName = ?, lastName = ?, email = ?, web = ? ,"
-				+ "birthdat = ?, password = ?  WHERE email = ?";
+				+ "birthdat = ?, password = ?  WHERE email = " + id;
 		Connection c = ds.getConnection();
 		PreparedStatement st = c.prepareStatement(query);
 		
@@ -86,18 +103,30 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 		String lastName = p.getLastName();
 		String email = p.getEmail();
 		String web = p.getWeb();
-		String naissance = p.getBirthday();
+		String birthday = p.getBirthday();
 		String password= p.getPassword();
 		
-		st.execute();		
+		prepareQuery(st, firstName, lastName, email, web, birthday, password);
+		
+		st.execute(query);		
 	}
 
 	@Override
 	public void deletePerson(Person p) throws SQLException {
 		String query = "DELETE FROM Person WHERE idGroup = " + p.getEmail();
 		Connection c = ds.getConnection();
-		PreparedStatement st = c.prepareStatement(query);
-		st.execute();	
+		Statement st = c.createStatement();
+		st.execute(query);	
 	}
 
+	private void prepareQuery(PreparedStatement st, Object ... parameters) throws SQLException{
+		for ( int i=0; i< parameters.length ; i++){
+			if(parameters[i] instanceof String)
+				st.setString(i+1, (String) parameters[i]);
+			else if(parameters[i] instanceof Integer)
+				st.setInt(i+1, (Integer) parameters[i]);
+			else if(parameters[i] instanceof java.math.BigDecimal)
+				st.setBigDecimal(i+1, (java.math.BigDecimal) parameters[i]);
+		}
+	}
 }
