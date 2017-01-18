@@ -3,11 +3,11 @@ package fr.services;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import fr.beans.Activity;
 
-@Remote
+@Local
 public interface ActivitySCRUD {
 
 	public ArrayList<Activity> searchActivity(String search) throws SQLException;

@@ -1,11 +1,15 @@
 package fr.beans;
 
+import javax.ejb.Stateful;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import fr.services.ConnectedUser;
+
 @Entity()
-public class Person {
+@Stateful(name="connectedUserBean")
+public class Person implements ConnectedUser {
 
 
 	@Column(name = "firstName")
@@ -28,6 +32,14 @@ public class Person {
 	private String password;
 	
 	public Person(){
+		
+	}
+	
+	public void login(String login, String pwd){
+		
+	}
+	
+	public void logout(){
 		
 	}
 

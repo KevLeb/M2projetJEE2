@@ -3,11 +3,11 @@ package fr.services;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import fr.beans.Person;
 
-@Remote
+@Local
 public interface PersonSCRUD {
 
 	public ArrayList<Person> searchPerson(String search) throws SQLException ;
