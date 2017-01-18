@@ -24,7 +24,7 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 	public ArrayList<Person> searchPerson(String search) throws SQLException {
 		ArrayList<Person> persons = new ArrayList<Person>();
 		
-		String query = "SELECT firstName, lastName, email, web, birthday FROM Person "
+		String query = "SELECT firstName, lastName, email, web, birthday FROM person "
 				+ "WHERE firstName LIKE " + "'%"+ search + "%'" +
 				" OR lastName   LIKE " + "'%"+ search + "%'" +
 				" OR email      LIKE " + "'%"+ search + "%' ORDER BY firstName, lastName";
@@ -48,7 +48,7 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 
 	@Override
 	public void createPerson(Person p) throws SQLException{
-		String query = "INSERT INTO Person (firstName, lastName, email, web, birthday, password "
+		String query = "INSERT INTO person (firstName, lastName, email, web, birthday, password "
 				+ "VALUES( ?, ?, ?, ?, ?, ?)";
 		Connection c = ds.getConnection();
 		PreparedStatement st = c.prepareStatement(query);
@@ -68,7 +68,7 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 
 	@Override
 	public Person readPerson(Person p)  throws SQLException {
-		String query = "SELECT firstName, lastName, email, web, birthday FROM Person "
+		String query = "SELECT firstName, lastName, email, web, birthday FROM person "
 				+ "WHERE firstName = " + p.getFirstName()  +
 				" OR lastName      = " + p.getLastName() +
 				" OR email         = " + p.getEmail() + 
@@ -113,7 +113,7 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 
 	@Override
 	public void deletePerson(Person p) throws SQLException {
-		String query = "DELETE FROM Person WHERE idGroup = " + p.getEmail();
+		String query = "DELETE FROM person WHERE idGroup = " + p.getEmail();
 		Connection c = ds.getConnection();
 		Statement st = c.createStatement();
 		st.execute(query);	
