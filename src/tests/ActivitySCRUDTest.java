@@ -10,7 +10,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class PersonSCRUDTest {
+import fr.beans.Activity;
+
+public class ActivitySCRUDTest {
 
 	private static EntityManager em;
 	private static EntityManagerFactory emf;
@@ -28,27 +30,27 @@ public class PersonSCRUDTest {
 	}
 	
 	@Test
-	public void testSearchPerson() throws SQLException{
+	public void testSearchActivity() throws SQLException{
 		
 	}
 	
 	@Test
-	public void testCreatePerson() throws SQLException{
+	public void testCreateActivity() throws SQLException{
 		
 	}
 	
 	@Test
-	public void testReadPerson() throws SQLException{
+	public void testReadActivity() throws SQLException{
 		
 	}
 	
 	@Test
-	public void testUpdatePerson() throws SQLException {
+	public void testUpdateActivity() throws SQLException {
 		
 	}
 	
 	@Test
-	public void testDeletePerson() throws SQLException {
+	public void testDeleteActivity() throws SQLException {
 		
 	}
 }
