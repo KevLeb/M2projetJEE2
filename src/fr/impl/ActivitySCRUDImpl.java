@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -21,7 +22,7 @@ public class ActivitySCRUDImpl implements ActivitySCRUD{
 	private DataSource ds;
 
 	@Override
-	public void searchActivity(String search) throws SQLException {
+	public ArrayList<Activity> searchActivity(String search) throws SQLException {
 		String query =  "SELECT * FROM Activity WHERE cv LIKE " + "'%"+ search + "%'" +
 				" OR year LIKE " + "'%"+ search + "%'" +
 				" OR nature    LIKE " + "'%"+ search + 
@@ -29,7 +30,23 @@ public class ActivitySCRUDImpl implements ActivitySCRUD{
 				" OR website LIKE " + "'%"+ search + "%'" +"%' ORDER BY title";
 		Connection c = ds.getConnection();
 		Statement st = c.createStatement();
-		st.execute(query);
+		ResultSet rs = st.executeQuery(query);
+		
+		ArrayList<Activity> activities = new ArrayList<>();
+		
+		while (rs.next()) {
+			Activity act = new Activity();
+			
+			//act.setCV(  rs.getInt(1) ); TODO a changer quand on aura réglé le pb pour l'id de cv dans une activité
+			act.setNature(rs.getString(2));
+			act.setTitle( rs.getString(3));
+			act.setWebSite(rs.getString(4));
+			act.setYear(rs.getInt(5));
+			act.setDescription(rs.getString(6));
+			activities.add(act);
+		}
+		
+		return activities.size() == 0 ? null : activities;
 	}
 
 	@Override
@@ -48,15 +65,14 @@ public class ActivitySCRUDImpl implements ActivitySCRUD{
 		String query =  "SELECT * FROM Activity WHERE cv="+a.getCv();
 		Connection c = ds.getConnection();
 		Statement st = c.createStatement();
-		st.execute(query);
 		ResultSet rs = st.executeQuery(query);
 
 		if (! rs.next())
 			return null;
 
 		Activity act = new Activity();
+		
 		//act.setCV(  rs.getInt(1) ); TODO a changer quand on aura réglé le pb pour l'id de cv dans une activité
-
 		act.setNature(rs.getString(2));
 		act.setTitle( rs.getString(3));
 		act.setWebSite(rs.getString(4));
