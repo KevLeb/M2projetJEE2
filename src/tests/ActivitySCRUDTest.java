@@ -10,8 +10,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fr.beans.Activity;
-
 public class ActivitySCRUDTest {
 
 	private static EntityManager em;

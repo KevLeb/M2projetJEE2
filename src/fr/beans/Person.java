@@ -1,9 +1,12 @@
 package fr.beans;
 
+import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import fr.services.ConnectedUser;
 
@@ -13,13 +16,16 @@ public class Person implements ConnectedUser {
 
 
 	@Column(name = "firstName")
+	@NotNull
 	private String firstName;
 
 	@Column(name = "lastName")
+	@NotNull
 	private String lastName;
 	
 	@Id()
 	@Column(name = "email")
+	@NotNull
 	private String email;
 	
 	@Column(name = "web")
@@ -28,6 +34,8 @@ public class Person implements ConnectedUser {
 	@Column(name = "birthday")
 	private String birthday;
 	
+	@NotNull
+	@Size(min=6)
 	@Column(name = "password")
 	private String password;
 	
@@ -39,6 +47,7 @@ public class Person implements ConnectedUser {
 		
 	}
 	
+	@Remove
 	public void logout(){
 		
 	}

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(schema="projetjee2")
@@ -13,10 +14,13 @@ public class Activity {
 	@JoinColumn(name="id")
 	private CV cv;
 
+	@NotNull
 	private int year;
 	
+	@NotNull
 	private String nature;
 	
+	@NotNull
 	private String title;
 	
 	private String description;
