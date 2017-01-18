@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -27,24 +28,22 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 				+ "WHERE firstName LIKE " + "'%"+ search + "%'" +
 				" OR lastName   LIKE " + "'%"+ search + "%'" +
 				" OR email      LIKE " + "'%"+ search + "%' ORDER BY firstName, lastName";
+		
 		Connection c = ds.getConnection();
-		PreparedStatement st = c.prepareStatement(query);
-		st.execute(query);
+		Statement st = c.createStatement();
 		ResultSet rs = st.executeQuery(query);
 		
-		if(! rs.next())
-			return null;
-		
-		Person pers = new Person();
-		pers.setFirstName( rs.getString(1) );
-		pers.setLastName ( rs.getString(2) );
-		pers.setEmail	 ( rs.getString(3) );
-		pers.setWeb		 ( rs.getString(4) );
-		pers.setBirthday ( rs.getString(5) );
-		pers.setPassword ( rs.getString(6) );
-		persons.add(pers);
-		
-		return persons;
+		while(rs.next()){
+			Person pers = new Person();
+			pers.setFirstName( rs.getString(1) );
+			pers.setLastName ( rs.getString(2) );
+			pers.setEmail	 ( rs.getString(3) );
+			pers.setWeb		 ( rs.getString(4) );
+			pers.setBirthday ( rs.getString(5) );
+			pers.setPassword ( rs.getString(6) );
+			persons.add(pers);
+		}
+		return persons.size() == 0 ? null : persons;
 	}
 
 	@Override
@@ -76,8 +75,7 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 				" OR web           = " + p.getWeb() + 
 				" OR birthday      = " + p.getBirthday();
 		Connection c = ds.getConnection();
-		PreparedStatement st = c.prepareStatement(query);
-		st.execute(query);
+		Statement st = c.createStatement();
 		ResultSet rs = st.executeQuery(query);
 
 		if (! rs.next())
@@ -95,9 +93,9 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 	}
 
 	@Override
-	public void updatePerson(Person p) throws SQLException {
+	public void updatePerson(Person p, String id) throws SQLException {
 		String query = "UPDATE Person SET firstName = ?, lastName = ?, email = ?, web = ? ,"
-				+ "birthdat = ?, password = ?  WHERE email = ?";
+				+ "birthdat = ?, password = ?  WHERE email = " + id;
 		Connection c = ds.getConnection();
 		PreparedStatement st = c.prepareStatement(query);
 		
@@ -110,14 +108,14 @@ public class PersonSCRUDImpl implements PersonSCRUD{
 		
 		prepareQuery(st, firstName, lastName, email, web, birthday, password);
 		
-		st.execute();		
+		st.execute(query);		
 	}
 
 	@Override
 	public void deletePerson(Person p) throws SQLException {
 		String query = "DELETE FROM Person WHERE idGroup = " + p.getEmail();
 		Connection c = ds.getConnection();
-		PreparedStatement st = c.prepareStatement(query);
+		Statement st = c.createStatement();
 		st.execute(query);	
 	}
 
