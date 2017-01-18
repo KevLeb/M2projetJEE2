@@ -39,14 +39,17 @@ public class PersonSCRUDTest {
 		
 	}
 	
+	@Test
 	public void readActivity() throws SQLException{
 		
 	}
 	
+	@Test
 	public void updateActivity() throws SQLException {
 		
 	}
 	
+	@Test
 	public void deleteActivity() throws SQLException {
 		
 	}
